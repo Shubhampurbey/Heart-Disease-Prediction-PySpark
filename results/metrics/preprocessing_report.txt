@@ -1,0 +1,107 @@
+====================================================================================================
+FEATURE ENGINEERING AND MLLIB PREPROCESSING REPORT
+PROJECT: HEART DISEASE PREDICTION USING PYSPARK AND MACHINE LEARNING (PHASE 3)
+====================================================================================================
+Generated Date: 2026-11-01
+Cleaned Source: data/processed/cardio_cleaned/
+Processed Output: results/preprocessed/train/ and results/preprocessed/test/
+Pipeline Models: models/preprocessing/lr_pipeline_model and models/preprocessing/rf_pipeline_model
+
+1. INPUT DATASET OVERVIEW & SAMPLING VERIFICATION
+----------------------------------------------------------------------------------------------------
+- Cleaned Observations Input   : 68,575 records
+- Input Column Count           : 14
+- Missing Values Across Input  : 0 (Zero missing values confirmed)
+- Unique Patient IDs           : 68,575 (100% uniquely identified)
+
+2. FEATURE SPECIFICATIONS & ENGINEERING
+----------------------------------------------------------------------------------------------------
+[A] Numerical Features (6 total):
+    - age_years : Standardized chronological age in completed years (derived in Phase 2)
+    - height    : Patient height in centimeters
+    - weight    : Patient body mass in kilograms
+    - ap_hi     : Systolic blood pressure (mmHg)
+    - ap_lo     : Diastolic blood pressure (mmHg)
+    - bmi       : Engineered Body Mass Index (BMI = weight / (height/100)^2)
+                  Clinically validated: requires height > 0; rounded to 2 decimal places.
+
+[B] Categorical Features (6 total):
+    - gender      : Biological sex (1: Female, 2: Male)
+    - cholesterol : Serum cholesterol (1: Normal, 2: Above Normal, 3: Well Above Normal)
+    - gluc        : Fasting blood glucose (1: Normal, 2: Above Normal, 3: Well Above Normal)
+    - smoke       : Smoking status (0: Non-smoker, 1: Smoker)
+    - alco        : Alcohol intake (0: Non-drinker, 1: Consumer)
+    - active      : Physical activity (0: Inactive, 1: Active)
+
+[C] Target & Non-Predictive Isolation:
+    - Target Variable : 'cardio' (0 = No CVD, 1 = CVD)
+    - MLlib Label     : 'label' (DoubleType cast of cardio: 0.0 or 1.0)
+    - Patient Key     : 'patient_id' (isolated identifier; completely excluded from feature vectors)
+
+3. CATEGORICAL ENCODING & NUMERICAL SCALING ARCHITECTURE
+----------------------------------------------------------------------------------------------------
+- StringIndexer Configuration:
+  * handleInvalid="keep" enabled across all categorical columns to reserve an index for novel categories,
+    ensuring robust inference during model serving without runtime exceptions.
+- OneHotEncoder Configuration:
+  * handleInvalid="keep" enabled to ensure alignment with StringIndexer.
+  * Encoded feature vectors preserve distinct sparse category levels.
+- Numerical Feature Imputation:
+  * Explicit audit confirmed 0 missing values across all numerical features.
+  * In compliance with project guidelines, no unnecessary imputation was performed, preserving empirical fidelity.
+- Numerical Feature Scaling:
+  * StandardScaler applied with withMean=True and withStd=True for the Logistic Regression pipeline.
+  * Random Forest pipeline preserves unscaled raw numerical values to maintain decision boundary interpretability.
+
+4. DUAL PREPROCESSING PIPELINE SPECIFICATIONS
+----------------------------------------------------------------------------------------------------
+1) Logistic Regression Preprocessing Pipeline:
+   Stage 1: StringIndexer(gender, cholesterol, gluc, smoke, alco, active) -> [*_idx]
+   Stage 2: OneHotEncoder([*_idx]) -> [*_ohe]
+   Stage 3: VectorAssembler([age_years, height, weight, ap_hi, ap_lo, bmi]) -> num_features_raw
+   Stage 4: StandardScaler(num_features_raw, withMean=True, withStd=True) -> num_features_scaled
+   Stage 5: VectorAssembler([num_features_scaled, *_ohe]) -> 'features_lr' (dimension: 26)
+
+2) Random Forest Preprocessing Pipeline:
+   Stage 1: StringIndexer(gender, cholesterol, gluc, smoke, alco, active) -> [*_idx]
+   Stage 2: OneHotEncoder([*_idx]) -> [*_ohe]
+   Stage 3: VectorAssembler([age_years, height, weight, ap_hi, ap_lo, bmi, *_ohe]) -> 'features_rf' (dimension: 26)
+
+5. STRATIFIED TRAIN / TEST SPLIT & CLASS BALANCE AUDIT
+----------------------------------------------------------------------------------------------------
+- Random Seed                  : 42 (fixed for reproducibility)
+- Target Stratification        : Preserved across 'cardio' classes
+- Training Cohort              : 54,878 records (80.03%)
+  * Class 0 (No Disease)       : 27,722 (50.52%)
+  * Class 1 (Disease)          : 27,156 (49.48%)
+- Testing Cohort               : 13,697 records (19.97%)
+  * Class 0 (No Disease)       : 6,923 (50.54%)
+  * Class 1 (Disease)          : 6,774 (49.46%)
+- Patient ID Overlap           : 0 records (Disjoint sets; zero data leakage)
+- Missing Target Labels        : 0 records
+
+6. DATA LEAKAGE PREVENTION AUDIT
+----------------------------------------------------------------------------------------------------
+- Pipeline Fitting Isolation  : Preprocessing pipelines were fitted EXCLUSIVELY on training data.
+- StandardScaler Parameters    : Mean and standard deviation parameters were learned solely from train_df.
+- Testing Evaluation Purity    : test_df was transformed using the fitted training pipeline model;
+                                 test data was never observed during fitting.
+- Identifier Isolation         : patient_id is completely absent from all VectorAssembler inputs.
+
+7. OUTPUT LOCATIONS & PERSISTED ASSETS
+----------------------------------------------------------------------------------------------------
+- Preprocessed Train Parquet   : results/preprocessed/train/
+- Preprocessed Test Parquet    : results/preprocessed/test/
+- Fitted LR Pipeline Model     : models/preprocessing/lr_pipeline_model
+- Fitted RF Pipeline Model     : models/preprocessing/rf_pipeline_model
+- Feature Metadata JSON        : models/preprocessing/feature_columns.json
+- Feature Schema JSON          : models/preprocessing/feature_schema.json
+- Split Statistics CSV         : results/metrics/train_test_split_stats.csv
+- Target Distribution CSV      : results/metrics/target_distribution_report.csv
+- Preprocessing Report TXT     : results/metrics/preprocessing_report.txt
+
+8. PHASE 4 ML READINESS
+----------------------------------------------------------------------------------------------------
+The dataset and pipeline models are verified, serialized, and fully prepared for Phase 4:
+Model Training, Hyperparameter Tuning, Cross-Validation, and Evaluation.
+====================================================================================================

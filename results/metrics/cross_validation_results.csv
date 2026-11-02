@@ -1,0 +1,9 @@
+Model,Fold_Strategy,regParam,elasticNetParam,numTrees,maxDepth,CV_Metric_Name,CV_Metric_Value
+Logistic Regression,3-Fold CrossValidator,0.01,0.0,N/A,N/A,mean_areaUnderROC,0.79001
+Logistic Regression,3-Fold CrossValidator,0.01,0.5,N/A,N/A,mean_areaUnderROC,0.78998
+Logistic Regression,3-Fold CrossValidator,0.1,0.0,N/A,N/A,mean_areaUnderROC,0.78653
+Logistic Regression,3-Fold CrossValidator,0.1,0.5,N/A,N/A,mean_areaUnderROC,0.78411
+Random Forest,3-Fold CrossValidator,N/A,N/A,50,6,mean_areaUnderROC,0.79313
+Random Forest,3-Fold CrossValidator,N/A,N/A,50,10,mean_areaUnderROC,0.79782
+Random Forest,3-Fold CrossValidator,N/A,N/A,100,6,mean_areaUnderROC,0.79311
+Random Forest,3-Fold CrossValidator,N/A,N/A,100,10,mean_areaUnderROC,0.79754

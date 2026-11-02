@@ -1,0 +1,137 @@
+{
+    "columns": [
+        {
+            "name": "patient_id",
+            "type": "integer",
+            "role": "identifier",
+            "predictive": false
+        },
+        {
+            "name": "cardio",
+            "type": "integer",
+            "role": "target_binary",
+            "values": [
+                0,
+                1
+            ]
+        },
+        {
+            "name": "label",
+            "type": "double",
+            "role": "target_mllib_label",
+            "values": [
+                0.0,
+                1.0
+            ]
+        },
+        {
+            "name": "age_years",
+            "type": "integer",
+            "role": "numerical_feature"
+        },
+        {
+            "name": "gender",
+            "type": "integer",
+            "role": "categorical_feature",
+            "values": [
+                1,
+                2
+            ]
+        },
+        {
+            "name": "height",
+            "type": "integer",
+            "role": "numerical_feature",
+            "unit": "cm"
+        },
+        {
+            "name": "weight",
+            "type": "double",
+            "role": "numerical_feature",
+            "unit": "kg"
+        },
+        {
+            "name": "ap_hi",
+            "type": "integer",
+            "role": "numerical_feature",
+            "unit": "mmHg"
+        },
+        {
+            "name": "ap_lo",
+            "type": "integer",
+            "role": "numerical_feature",
+            "unit": "mmHg"
+        },
+        {
+            "name": "cholesterol",
+            "type": "integer",
+            "role": "categorical_feature",
+            "values": [
+                1,
+                2,
+                3
+            ]
+        },
+        {
+            "name": "gluc",
+            "type": "integer",
+            "role": "categorical_feature",
+            "values": [
+                1,
+                2,
+                3
+            ]
+        },
+        {
+            "name": "smoke",
+            "type": "integer",
+            "role": "categorical_feature",
+            "values": [
+                0,
+                1
+            ]
+        },
+        {
+            "name": "alco",
+            "type": "integer",
+            "role": "categorical_feature",
+            "values": [
+                0,
+                1
+            ]
+        },
+        {
+            "name": "active",
+            "type": "integer",
+            "role": "categorical_feature",
+            "values": [
+                0,
+                1
+            ]
+        },
+        {
+            "name": "bmi",
+            "type": "double",
+            "role": "engineered_numerical_feature",
+            "unit": "kg/m^2"
+        },
+        {
+            "name": "features_lr",
+            "type": "vector",
+            "dimension": 26,
+            "scaling": "standard_scaled"
+        },
+        {
+            "name": "features_rf",
+            "type": "vector",
+            "dimension": 26,
+            "scaling": "unscaled"
+        },
+        {
+            "name": "features",
+            "type": "vector",
+            "dimension": 26,
+            "scaling": "standard_scaled"
+        }
+    ]
+}

@@ -1,0 +1,28 @@
+{
+    "numerical_features": [
+        "age_years",
+        "height",
+        "weight",
+        "ap_hi",
+        "ap_lo",
+        "bmi"
+    ],
+    "categorical_features": [
+        "gender",
+        "cholesterol",
+        "gluc",
+        "smoke",
+        "alco",
+        "active"
+    ],
+    "engineered_features": [
+        "bmi"
+    ],
+    "target_column": "cardio",
+    "target_label_column": "label",
+    "patient_id_column": "patient_id",
+    "feature_vector_dimension": 26,
+    "feature_vector_scaled_column": "features_lr",
+    "feature_vector_unscaled_column": "features_rf",
+    "default_features_column": "features"
+}

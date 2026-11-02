@@ -1,0 +1,15 @@
+Category,Metric,Value,Action / Status,Rationale
+Record Count,Original Record Count,70000,Loaded raw CSV dataset,Initial dataset size before preprocessing
+Duplicates,Exact Duplicates (with ID),0,Verified,Artificial ID makes all raw rows uniquely indexed
+Duplicates,Duplicate Clinical Records (without ID),24,Removed 24 duplicates,Identical demographic and clinical observations indicate duplicate entry
+Missing Values,Total Null / NaN Count Across All Columns,0,No imputation required,Dataset is 100% complete; zero nulls present
+Blood Pressure,Inverted Blood Pressure (ap_hi <= ap_lo),1236,Removed invalid rows,Physiologically impossible for systolic to be <= diastolic pressure
+Blood Pressure,Systolic BP (ap_hi) Out of Bounds [<60 or >250],228,Removed invalid rows,"Values <60 (or negative) and >250 (up to 16,020) are data entry typos"
+Blood Pressure,Diastolic BP (ap_lo) Out of Bounds [<40 or >150],1034,Removed invalid rows,"Values <40 (or negative) and >150 (up to 11,000) are data entry typos"
+Anthropometrics,Height Out of Bounds [<120 or >220 cm],53,Removed invalid rows,Severe outliers (<120 cm e.g. 55 cm) reflect toddler measurements
+Anthropometrics,Weight Out of Bounds [<35 or >200 kg],20,Removed invalid rows,Severe outliers (<35 kg e.g. 10 kg) reflect toddler measurements
+Clinical Outliers,Valid Severe Clinical Cases Retained,Retained,Preserved without truncation,Hypertensive (ap_hi 160-220) and obese (weight 105-180 kg) patients are genuine high-risk cases
+Feature Engineering,Age Conversion (Days to Years),Created 'age_years',Calculated floor(age / 365.25),"Standardized chronological age in completed years, accounting for leap years"
+Patient Identifier,Patient ID Lineage,Retained in storage,"Kept in parquet, excluded from future ML features",Maintains patient auditability and lineage without leaking arbitrary ID to ML models
+Summary,Total Records Removed,1425,2.04% of raw dataset,Combined duplicates and invalid clinical measurements removed
+Summary,Cleaned Record Count,68575,97.96% retained,High-fidelity dataset ready for exploratory analysis and ML modeling

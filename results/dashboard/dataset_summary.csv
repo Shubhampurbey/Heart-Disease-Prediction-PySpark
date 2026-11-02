@@ -1,0 +1,2 @@
+total_records,training_records,testing_records,no_disease_count,disease_count,missing_values,duplicate_records,class_count_scope,duplicate_record_scope,cleaned_duplicate_records
+68575,54878,13697,34645,33930,0,24,cleaned_full_data,clinical_duplicates_removed_from_raw_input,0

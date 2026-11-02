@@ -1,0 +1,9 @@
+{
+    "selected_best_model": "Random Forest",
+    "selection_criteria": "Balanced clinical ranking (50% ROC-AUC, 30% F1-score, 20% Recall)",
+    "features_col": "features_rf",
+    "label_col": "label",
+    "prediction_col": "prediction",
+    "probability_col": "probability",
+    "saved_timestamp": "2026-11-01 00:38:48"
+}

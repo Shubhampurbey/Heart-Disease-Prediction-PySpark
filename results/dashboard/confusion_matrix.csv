@@ -1,0 +1,9 @@
+model_name,actual_class,predicted_class,count
+Logistic Regression,0,0,5470
+Logistic Regression,0,1,1453
+Logistic Regression,1,0,2174
+Logistic Regression,1,1,4600
+Random Forest,0,0,5613
+Random Forest,0,1,1310
+Random Forest,1,0,2248
+Random Forest,1,1,4526
